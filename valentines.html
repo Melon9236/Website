@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Be My Valentine?</title>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: white;
+        font-family: 'Arial', sans-serif;
+        overflow: hidden;
+    }
+
+    h1 {
+        font-family: 'Pacifico', cursive;
+        color: #d63384;
+        font-size: 3rem;
+        text-shadow: 2px 2px 5px #ffc0cb;
+        margin-bottom: 50px;
+    }
+
+    .btn-container {
+        position: relative;
+        width: 300px;
+        height: 200px;
+    }
+
+    button {
+        padding: 15px 35px;
+        font-size: 1.3rem;
+        cursor: pointer;
+        border-radius: 50px;
+        border: none;
+        transition: transform 0.2s, box-shadow 0.2s;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    button:hover {
+        transform: scale(1.1);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+
+    #yesBtn {
+        background: linear-gradient(45deg, #ff4d6d, #ff758f);
+        color: white;
+        margin-left: 30px;
+    }
+
+    #noBtn {
+        background: linear-gradient(45deg, #adb5bd, #868e96);
+        color: white;
+        position: absolute;
+        margin-left: 30px;
+    }
+
+    /* Cute floating hearts animation */
+    .heart {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background-color: #ff4d6d;
+        transform: rotate(45deg);
+        animation: float 4s linear infinite;
+    }
+
+    .heart::before,
+    .heart::after {
+        content: '';
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background-color: #ff4d6d;
+        border-radius: 50%;
+    }
+
+    .heart::before {
+        top: -10px;
+        left: 0;
+    }
+
+    .heart::after {
+        left: -10px;
+        top: 0;
+    }
+
+    @keyframes float {
+        0% { transform: translateY(0) rotate(45deg); opacity: 1; }
+        100% { transform: translateY(-500px) rotate(45deg); opacity: 0; }
+    }
+</style>
+</head>
+<body>
+    <audio id="bgMusic"></audio>
+
+<h1>Will you be my Valentine, Crystel?</h1>
+
+<div class="btn-container">
+    <button id="yesBtn">Yes</button>
+
+<!-- Popup Window -->
+<div id="popup" class="popup">
+  <div class="popup-content">
+    <span id="closeBtn" class="close">&times;</span>
+    <h2>Happy Valentine's Day po! ❤️</h2>
+    <p id="popupMessage"></p>
+    <button id="okBtn">Ok</button>
+  </div>
+</div>
+    <button id="noBtn" class="no-button">
+    No
+    <img src="hamster.jpg" class="hamster" />
+</button>
+
+</div>
+
+<style> 
+    body {
+    font-family: 'Arial', sans-serif;
+}
+.emoji {
+    position: absolute;
+    width: 100px;       /* adjust size */
+    height: 100px;
+    pointer-events: none; /* clicks pass through */
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    z-index: 1000;
+    opacity: 0;
+}
+
+.hamster {
+    position: absolute;
+    width: 100%;        /* control size here */
+    height: 100%;       /* keep proportions */
+    bottom: 100%;
+    top: 0px;
+    left: 50px;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: 0.3s ease;
+    pointer-events: none;
+    object-fit: fill;
+    display: block;
+    border-radius: 30px
+}
+.no-button {
+    position: relative;   /* VERY IMPORTANT */
+    overflow: visible;
+    cursor: pointer;
+    border: none;
+}
+.no-button:hover .hamster {
+    opacity: 5;
+}
+
+/* Popup background */
+.popup {
+    display: none; /* hidden by default */
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(255, 182, 193, 0.5); /* soft pink overlay */
+    backdrop-filter: blur(3px);
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+
+/* Popup box */
+.popup-content {
+    background: #fff0f3;
+    border-radius: 20px;
+    padding: 40px 60px;
+    text-align: center;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+    position: relative;
+    animation: popupShow 0.3s ease-out;
+}
+
+.popup-content h2 {
+    font-family: 'Pacifico', cursive;
+    color: #d63384;
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+}
+
+.popup-content p {
+    font-size: 1.2rem;
+    margin-bottom: 25px;
+}
+
+/* Close button */
+.close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: #d63384;
+}
+
+/* Ok button */
+#okBtn {
+    padding: 10px 25px;
+    font-size: 1rem;
+    border-radius: 50px;
+    border: none;
+    background: linear-gradient(45deg, #ff4d6d, #ff758f);
+    color: white;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+#okBtn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+/* Popup animation */
+@keyframes popupShow {
+    from { transform: scale(0.5); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+</style>
+
+<script>
+const songs = [
+    'music2.mp3',
+    'music3.mp3',
+    'music4.mp3'
+];
+
+const emojis = [
+    'bg1.png',
+    'bg2.png',
+    'bg3.png',
+    'bg4.png',
+    'bg5.png',
+    'bg6.png',
+    'emoji7.png',
+    'emoji8.png',
+    'emoji9.png'
+];
+
+const noBtn = document.getElementById('noBtn');
+const yesBtn = document.getElementById('yesBtn');
+const popup = document.getElementById('popup');
+const popupMessage = document.getElementById('popupMessage');
+const closeBtn = document.getElementById('closeBtn');
+const okBtn = document.getElementById('okBtn');
+const bgMusic = document.getElementById('bgMusic');
+const hamster = noBtn.querySelector('.hamster');
+
+let currentSong = 0;
+let hideTimeout;
+
+// --- No Button: evade mouse ---
+noBtn.addEventListener('mouseover', () => {
+    const btnWidth = noBtn.offsetWidth;
+    const btnHeight = noBtn.offsetHeight;
+    const maxX = window.innerWidth - btnWidth;
+    const maxY = window.innerHeight - btnHeight;
+    const x = Math.floor(Math.random() * maxX);
+    const y = Math.floor(Math.random() * maxY);
+    noBtn.style.position = 'fixed';
+    noBtn.style.left = x + 'px';
+    noBtn.style.top = y + 'px';
+});
+
+noBtn.addEventListener('mouseenter', () => {
+    clearTimeout(hideTimeout);
+    hamster.style.opacity = '1';
+});
+
+noBtn.addEventListener('mouseleave', () => {
+    hideTimeout = setTimeout(() => {
+        hamster.style.opacity = '0';
+    }, 1000);
+});
+
+// --- Floating Hearts ---
+function createHeart() {
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+    heart.style.left = Math.random() * window.innerWidth + 'px';
+    heart.style.animationDuration = 3 + Math.random() * 2 + 's';
+    document.body.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 4000);
+}
+setInterval(createHeart, 500);
+
+// --- Music ---
+function playNextSong() {
+    bgMusic.src = songs[currentSong];
+    bgMusic.play();
+    currentSong = (currentSong + 1) % songs.length;
+}
+bgMusic.addEventListener('ended', playNextSong);
+
+function stopMusic() {
+    bgMusic.pause();
+    bgMusic.currentTime = 0;
+    currentSong = 0;
+}
+
+// --- Close Popup ---
+closeBtn.addEventListener('click', () => {
+    popup.style.display = 'none';
+    stopMusic();
+});
+okBtn.addEventListener('click', () => {
+    popup.style.display = 'none';
+    stopMusic();
+});
+window.addEventListener('click', (e) => {
+    if (e.target === popup) {
+        popup.style.display = 'none';
+        stopMusic();
+    }
+});
+
+let activeSessionId = 0; // Tracks which click is the "real" one
+
+function typeMessage(container, message, speed = 50, sessionId) {
+    return new Promise((resolve) => {
+        const line = document.createElement('div');
+        container.appendChild(line);
+
+        let i = 0;
+        function typeLetter() {
+            // Check: If the session changed, stop this loop entirely!
+            if (sessionId !== activeSessionId) {
+                line.remove(); // Clean up the orphaned line
+                return; 
+            }
+
+            if (i < message.length) {
+                line.textContent += message[i];
+                i++;
+                setTimeout(typeLetter, speed);
+            } else {
+                resolve();
+            }
+        }
+        typeLetter();
+    });
+}
+
+yesBtn.addEventListener('click', async () => {
+    // 1. Update the session ID to "kill" any previous running loops
+    activeSessionId++; 
+    const mySessionId = activeSessionId;
+
+    popup.style.display = 'flex';
+    popupMessage.innerHTML = ""; 
+    
+    playNextSong();
+
+    const messages = [
+        "I know po na sobrang cliche ng mga sasabihin ko, pero sasabihin ko pa rin dahil ito po ay yung nararamdaman ko", 
+        "At ito rin po kasi ang dahilan kaya ako nagkaroon ng motivation na gawin ito (kaso nagpatulong ako sa AI hehe)", 
+        "Hindi pa naman po ako ganon kagaling at maalam sa paggawa ng AI eh. Pero don't worry po, nag isip din naman po ako",
+        "Sa mga ideas, design, colors, animations, etc. Sumakatuwid po, AI po yung bahala sa hard coding and ako sa pag iisip",
+        "Maraming salamat din po kasi ikaw yung palagi kong motivation sa lahat ng bagay, hindi lang ang mini project po na ito",
+        "Kundi sa lahat po. Alam mo, ikaw po yung motivation ko sa pag-aaral, sa paga-upskill sa IT, at sa iba pa.",
+        "Kung wala ka po, siguro basics at fundamentals pa lang ang alam ko sa IT, pero hindi po yun nangyari. Salamat po ulit",
+        "Gusto ko lang po na malaman mo at matandaan mo parati na ikaw lang po yung mahal ko",
+        "Hinding-hindi po kita ipagpapalit kahit kanino man. Hindi ko po alam kung maniniwala at magtitiwala ka sa kin",
+        "Pero sana maging komportable ka po at masaya sa relasyon natin. Palagi ko pong napapansin na lagi ka na lang nag-aalala",
+        "Kung ano-ano po ang iyong iniisip. Ang daming kinakatakutan. Ayaw ko naman po na every month ay nagkakaganiyan ka po",
+        "I know naman po na mahal na mahal mo ako. At mahal na mahal din po kita. Pero isipin mo rin po yung sarili mo",
+        "Hindi po kita pinapagalitan or kung ano, ha? Gusto ko lang pong malaman mo kasi ayaw kong maging lalaki na parating",
+        "Matatamis at magagandang salita ang maririnig sa bibig. Gusto ko pong mag-grow tayo at maging masaya. Ayun lang po",
+        "Sana po ay magtagal pa tayo at hindi maghiwalay. Isa ka po sa mga pinaka-special na taong malapit sa kin",
+        "Pasensya na po kung ito lang ang kaya kong gawin para sa yo. Godbless po sa ating dalawa at sana'y maging successful tayo"
+    ];
+
+    // The 'await' makes them print one by one in order
+    for (const msg of messages) {
+        // 2. Pass the current session ID into the function
+        await typeMessage(popupMessage, msg, 50, mySessionId);
+        
+        // 3. Safety check: If a new click happened during the 'await', exit this loop
+        if (mySessionId !== activeSessionId) return;
+    }
+
+    // Floating emojis
+    emojis.forEach(src => {
+        const emoji = document.createElement('img');
+        emoji.src = src;
+        emoji.classList.add('emoji');
+        emoji.style.position = 'fixed';
+        emoji.style.width = '80px';
+        emoji.style.height = '80px';
+        emoji.style.left = Math.random() * (window.innerWidth - 40) + 'px';
+        emoji.style.bottom = '-50px';
+        emoji.style.opacity = '1';
+        emoji.style.zIndex = '900';
+        document.body.appendChild(emoji);
+
+        const riseDistance = window.innerHeight + 100;
+        const duration = 2000 + Math.random() * 1000;
+
+        emoji.animate(
+            [
+                { transform: 'translateY(0px)', opacity: 1 },
+                { transform: `translateY(-${riseDistance}px)`, opacity: 0 }
+            ],
+            { duration: duration, easing: 'linear', fill: 'forwards' }
+        );
+
+        setTimeout(() => emoji.remove(), duration);
+    });
+});
+
+</script>
+</body>
+</html>

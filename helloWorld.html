@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentine Hearts</title>
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    background: #ffe6e6;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    font-family: sans-serif;
+  }
+
+  #heart-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .heart {
+    position: absolute;
+    width: 40px;
+    height: 36px;
+    background: #ff0000; /* solid red */
+    transform: rotate(-45deg);
+    border-radius: 8%;
+    animation: floatUp 3s forwards;
+  }
+
+  .heart::before,
+  .heart::after {
+    content: "";
+    position: absolute;
+    width: 40px;
+    height: 36px;
+    background: #ff0000;
+    border-radius: 50%;
+  }
+
+  .heart::before { top: -20px; left: 0; }
+  .heart::after  { top: 0; left: 20px; }
+
+  @keyframes floatUp {
+    0% { transform: rotate(-45deg) scale(0); opacity: 0; bottom: 0; }
+    20% { transform: rotate(-45deg) scale(1.2); opacity: 1; }
+    100% { transform: rotate(-45deg) scale(1); opacity: 0; bottom: 700px; }
+  }
+
+  #heart-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    font-size: 2rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 10;
+  }
+</style>
+</head>
+<body>
+<div id="envelope">
+ <div class="flap"></div>
+ <div class="body"></div>
+    <div class="inside"></div>   
+       <div class="bottom-triangle"></div>
+</div> 
+<div id="heart-container"></div>
+<button id="heart-btn">❤️</button>
+
+<style>
+#envelope {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 450px;
+  height: 290px;
+  border-radius: 16px;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  z-index: 5;
+  background: #ffc0cb;  /* envelope body */
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  overflow: visible; /* important! let flap show */
+}
+
+#envelope .body {
+  width: 100%;
+  height: 100%;
+  background: #ffc0cb; /* light pink outside */
+  border-radius: 16px; /* rounded corners */
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+}
+
+/* inside of envelope */
+#envelope .inside {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #ffe6e6; /* lighter pink inside */
+  border-radius: 16px; /* rounded top corners */
+  z-index: 0;
+  transform: translateY(-100%); /* hide under flap */
+  transition: transform 0.5s ease;
+}
+
+/* flap */
+#envelope .flap {
+  position: absolute;
+  top: -150px;  /* above the body */
+  left: 0;
+  width: 0;
+  height: 0;
+  border-left: 225px solid transparent;
+  border-right: 228px solid transparent;
+  border-bottom: 150px solid #ffb6c1; /* slightly darker pink */
+  transform-origin: bottom center;
+  transform: rotateX(0deg);
+  transition: transform 1s ease;
+  z-index: 10;
+
+  filter: 
+    drop-shadow(2px 2px 2px rgba(0,0,0,0.07))
+    drop-shadow(-2px 2px 2px rgba(0,0,0,0.07))
+    drop-shadow(2px -2px 2px rgba(0,0,0,0.07))
+    drop-shadow(-2px -2px 2px rgba(0,0,0,0.07));
+}
+
+/* flap open */
+#envelope.open .flap {
+  transform: rotateX(180deg);
+}
+#envelope .bottom-triangle {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 30px solid transparent;
+  border-right: 30px solid transparent;
+  border-top: 20px solid #ffd6dc; /* inner flap color */
+  z-index: 2; /* below flap but above body */
+}
+
+
+</style>
+
+<script>
+const container = document.getElementById("heart-container");
+const btn = document.getElementById("heart-btn");
+
+function createHeart() {
+  const heart = document.createElement("div");
+  heart.className = "heart";
+
+  // random horizontal position
+  heart.style.left = Math.random() * (window.innerWidth - 40) + "px";
+  heart.style.bottom = "0px"; // start at bottom
+
+  // random scale for size variation
+  const scale = 0.8 + Math.random() * 0.6; // 0.8 to 1.4
+  heart.style.transform = `rotate(-45deg) scale(${scale})`;
+
+  container.appendChild(heart);
+
+  // remove heart after animation
+  setTimeout(() => heart.remove(), speed * 1000);
+}
+
+// initial hearts on page load
+for (let i = 0; i < 5; i++) {
+  setTimeout(() => createHeart(), i * 300);
+}
+
+// pop hearts when button is clicked
+btn.addEventListener("click", () => {
+  for (let i = 0; i < 5; i++) {
+    setTimeout(() => createHeart(), i * 200);
+  }
+});
+
+const envelope = document.getElementById("envelope");
+envelope.addEventListener("click", () => {
+  envelope.classList.toggle("open");
+  console.log(envelope.classList);
+});
+
+
+</script>
+
+</body>
+</html>
